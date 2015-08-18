@@ -11,6 +11,14 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows],
+            "Expected value did not appear in table -- text was \n%s" %
+            table.text
+        )
+
     def test_can_start_a_list_and_retrieve_it(self):
         # user goes to web page to see to do app
         self.browser.get('http://localhost:8000')
@@ -34,14 +42,8 @@ class NewVisitorTest(unittest.TestCase):
         # now the page lists "1: Buy cow" as an item
         # in a to-do list
 	inputbox.send_keys(Keys.ENTER)
+        self.check_for_row_in_list_table('1. Buy cow')
         
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy cow', [row.text for row in rows],
-            "New to-do item did not appear in table -- text was \n%s" % 
-            table.text
-        )
-
         # There is still a textbox inviting her to add
         # another item. She enters "Milk the cow"
         inputbox = self.browser.find_element_by_id('id_new_item')
@@ -50,17 +52,8 @@ class NewVisitorTest(unittest.TestCase):
 
         # The page updates, now show both items in 
         # her list
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn('1: Buy cow', [row.text for row in rows],
-            "New to-do item did not appear in table -- text was \n%s" % 
-            table.text
-        )
-        self.assertIn('2: Milk the cow', [row.text for row in rows],
-            "New to-do item did not appear in table -- text was \n%s" % 
-            table.text
-        )
-
+        self.check_for_row_in_list_table('1. Buy cow')
+        self.check_for_row_in_list_table('2: Milk the cow')
 
         # The website has generated a unique URL for
         # her list -- there is some explanatory text
