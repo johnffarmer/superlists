@@ -42,7 +42,7 @@ class NewVisitorTest(unittest.TestCase):
         # now the page lists "1: Buy cow" as an item
         # in a to-do list
 	inputbox.send_keys(Keys.ENTER)
-        self.check_for_row_in_list_table('1. Buy cow')
+        self.check_for_row_in_list_table('1: Buy cow')
         
         # There is still a textbox inviting her to add
         # another item. She enters "Milk the cow"
@@ -52,7 +52,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # The page updates, now show both items in 
         # her list
-        self.check_for_row_in_list_table('1. Buy cow')
+        self.check_for_row_in_list_table('1: Buy cow')
         self.check_for_row_in_list_table('2: Milk the cow')
 
         # The website has generated a unique URL for
