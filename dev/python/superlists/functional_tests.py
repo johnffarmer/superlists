@@ -37,16 +37,30 @@ class NewVisitorTest(unittest.TestCase):
         
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1: Buy cow' for row in rows),
-            "New to-do item did not appear in table."
+        self.assertIn('1: Buy cow', [row.text for row in rows],
+            "New to-do item did not appear in table -- text was \n%s" % 
+            table.text
         )
 
         # There is still a textbox inviting her to add
         # another item. She enters "Milk the cow"
+        inputbox = self.browser.find_element_by_id('id_new_item')
+	inputbox.send_keys('Milk the cow')
+	inputbox.send_keys(Keys.ENTER)
 
         # The page updates, now show both items in 
         # her list
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Buy cow', [row.text for row in rows],
+            "New to-do item did not appear in table -- text was \n%s" % 
+            table.text
+        )
+        self.assertIn('2: Milk the cow', [row.text for row in rows],
+            "New to-do item did not appear in table -- text was \n%s" % 
+            table.text
+        )
+
 
         # The website has generated a unique URL for
         # her list -- there is some explanatory text
@@ -57,7 +71,6 @@ class NewVisitorTest(unittest.TestCase):
 
         # user done
         self.fail('Finish the test!')
-
 
 if __name__ == '__main__':
     unittest.main()
