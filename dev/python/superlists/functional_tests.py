@@ -14,9 +14,11 @@ class NewVisitorTest(unittest.TestCase):
     def test_can_start_a_list_and_retrieve_it(self):
         # user goes to web page to see to do app
         self.browser.get('http://localhost:8000')
-
+    
         # check title and header mention to-do
         self.assertIn('To-Do', self.browser.title)
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('To-Do', header_text)
 
         # user prompted to enter a todo list
         inputbox = self.browser.find_element_by_id('id_new_item')
@@ -36,7 +38,8 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(row.text == '1: Buy cow' for row in rows)
+            any(row.text == '1: Buy cow' for row in rows),
+            "New to-do item did not appear in table."
         )
 
         # There is still a textbox inviting her to add
