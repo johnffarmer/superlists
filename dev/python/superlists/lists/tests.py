@@ -44,8 +44,8 @@ class HomePageTest(TestCase):
         self.assertEqual(Item.objects.count(), 0)
 
     def test_home_page_displays_all_list_items(self):
-        Item.objects.create(text='itemy 1')
-        Item.objects.create(text='itemy 2')
+        Item.objects.create(text='itemey 1')
+        Item.objects.create(text='itemey 2')
 
         request = HttpRequest()
         response = home_page(request)
