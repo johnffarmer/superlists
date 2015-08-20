@@ -87,14 +87,12 @@ class NewVisitorTest(LiveServerTestCase):
 
         # Frank gets his own unique URL
         frank_list_url = self.browser.current_url
-        self.assertTrue(re.match('/lists/.+', frank_list_url))
+        self.assertTrue(re.search('/lists/.+', frank_list_url))
         self.assertNotEqual(frank_list_url, edith_list_url) 
 
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy cow', page_text)
         self.assertNotIn('Milk the cow', page_text)
 
-        # user done
-        self.fail('Finish the test!')
 
 
